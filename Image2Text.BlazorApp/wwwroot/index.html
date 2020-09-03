@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Image to Ascii, Blazor Sample</title>
+    <base href="/" />
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/app.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <app>Loading...</app>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <script>
+        ArtWorkFontSize = 20;
+        window.ResizeToFitScreen = () => {
+            var pre = document.getElementsByTagName("pre")[0];
+            while (pre.offsetWidth > document.body.clientWidth) {
+                pre.style.fontSize = (--ArtWorkFontSize) + "px";
+                pre.style.lineHeight = (ArtWorkFontSize / 1.6) + "px";
+            }
+        }
+
+        window.Resize = (change) => {
+            var pre = document.getElementsByTagName("pre")[0];
+            ArtWorkFontSize += change;
+
+            pre.style.fontSize = ArtWorkFontSize + "px";
+            pre.style.lineHeight = (ArtWorkFontSize / 1.6) + "px";
+        }
+
+        //window.LoadSample = (dotnetHelper) => {
+        //    dotnetHelper.invokeMethodAsync('LoadSample')
+        //        .then(message => console.log(message));
+        //}
+
+        window.CopyAsciiToClipboard = () => {
+            var pre = document.getElementsByTagName("pre")[0];
+
+            copyTextToClipboard(pre.innerText);
+        }
+
+        function fallbackCopyTextToClipboard(text) {
+            var textArea = document.createElement("textarea");
+            textArea.value = text;
+
+            // Avoid scrolling to bottom
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
+
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                var successful = document.execCommand('copy');
+                var msg = successful ? 'successful' : 'unsuccessful';
+                console.log('Fallback: Copying text command was ' + msg);
+            } catch (err) {
+                console.error('Fallback: Oops, unable to copy', err);
+            }
+
+            document.body.removeChild(textArea);
+        }
+        function copyTextToClipboard(text) {
+            if (!navigator.clipboard) {
+                fallbackCopyTextToClipboard(text);
+                return;
+            }
+            navigator.clipboard.writeText(text).then(function () {
+                console.log('Async: Copying to clipboard was successful!');
+            }, function (err) {
+                console.error('Async: Could not copy text: ', err);
+            });
+        }
+
+
+    </script>
+    <script src="_framework/blazor.webassembly.js"></script>
+
+</body>
+
+</html>

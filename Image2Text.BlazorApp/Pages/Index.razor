@@ -1,0 +1,182 @@
+﻿@page "/"
+
+@using Tewr.Blazor.FileReader
+@using System.IO;
+@using System.Web;
+
+@inject IFileReaderService fileReaderService;
+@inject IJSRuntime jsRuntime;
+@inject IFileReaderService fileReaderService;
+@inject ConverterFactory converterFactory;
+@inject HttpClient httpClient;
+<style>
+    .@dropTargetClass {
+        display: block;
+        padding: 20px;
+        margin-bottom: 10px;
+        border: 1px dashed black;
+        border-radius: 5px;
+        position: relative;
+    }
+
+    .@dropTargetDragClass {
+        border-color: orangered;
+        font-weight: bold;
+    }
+
+    input.clickable {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        margin-top: -20px;
+        margin-left: -20px;
+        cursor: pointer;
+    }
+    pre {
+        padding: 5px;
+        border: 1px dashed black;
+        border-radius: 5px;
+        text-align:center;
+    }
+</style>
+
+<div class="@ImageDropClass">
+    <input type="file"
+           class="clickable"
+           @ref=dropTargetInput
+           @onchange="OnInputChange"
+           @ondragenter="OnIpDragEnter"
+           @ondragleave="OnIpDragLeave"
+           multiple />
+    @((MarkupString)DropBoxCaption)
+</div>
+
+<br />
+
+<a href="javascript:Resize(1);">Bigger Font</a> | <a href="javascript:Resize(-1);">Smaller Font</a> | <a href="javascript:CopyAsciiToClipboard();">Copy to clipboard</a>
+<pre @onclick="LoadSample">@((MarkupString)Output)</pre>
+
+
+@code {
+    private bool ReadingStarted = false;
+    private const int MaxSize = 1024 * 100;
+    private const string DotNetBotUrl = "https://raw.githubusercontent.com/dotnet-foundation/swag/71f7cbc4b74444d9022638f60ff03ca30e2a1ea6/dotnet-bot/dotnet-bot_branded.png";
+
+    private string DropBoxCaption { get; set; } = "Drop an image here or click me!<br />" +
+        $"<small><em>Currently supports .jpg & .png, max {MaxSize / 1024}kb</em><br />" +
+        "It's buid with Blazor WebAssembly, so its as fast as your browser is, try small images at first!</small>";
+
+    private string Output { get; set; } = "<strong>Your artwork is waiting here...!</strong><br /><br />" +
+        "You can upload the image you want, or you can try with the dotnet bot:<br />" +
+        $"<a href='javascript:LoadSample();'><img src='{DotNetBotUrl}' /></a><br />";
+
+    private ElementReference dropTargetInput;
+    private IFileReaderRef fileReaderRef;
+    private List<string> _imageDropClasses = new List<string>() { dropTargetClass };
+    private string ImageDropClass => string.Join(" ", _imageDropClasses);
+
+    private const string dropTargetDragClass = "droptarget-drag";
+    private const string dropTargetClass = "droptarget";
+
+    private class FileWithStream { public IFileInfo FileInfo { get; set; } public AsyncDisposableStream Stream { get; set; } }
+
+    protected override Task OnAfterRenderAsync(bool isFirstRender)
+    {
+        fileReaderRef = fileReaderService.CreateReference(dropTargetInput);
+        return Task.CompletedTask;
+    }
+
+    public void OnIpDragEnter(EventArgs e) => _imageDropClasses.Add(dropTargetDragClass);
+
+    public void OnIpDragLeave(EventArgs e) => _imageDropClasses.Remove(dropTargetDragClass);
+
+    public async Task OnInputChange(EventArgs e)
+    {
+        _imageDropClasses.Remove(dropTargetDragClass);
+        await ReadFile();
+        this.StateHasChanged();
+    }
+
+    public async Task ReadFile()
+    {
+        ReadingStarted = true;
+        var files = await fileReaderRef.EnumerateFilesAsync();
+
+        DropBoxCaption = "Reading image data...";
+        this.StateHasChanged();
+
+        if (files.Count() > 1)
+        {
+            DropBoxCaption = "Only one image at a time!<br /><em>Please try again!</em>";
+            this.StateHasChanged();
+            return;
+        }
+
+        var file = files.FirstOrDefault();
+        if (file == null)
+        {
+            DropBoxCaption = "You didn't select anything!<br /><em>Please try again!</em>";
+            this.StateHasChanged();
+            return;
+        }
+
+        var fileInfo = await file.ReadFileInfoAsync();
+        if (fileInfo.Type != "image/png" && fileInfo.Type != "image/jpeg")
+        {
+            DropBoxCaption = "Sorry, .png & .jpg only!<br /><em>Please try again!</em>";
+            this.StateHasChanged();
+            return;
+        }
+        if (fileInfo.Size > MaxSize)
+        {
+            DropBoxCaption = $"Sorry, max {MaxSize / 1024}kb!<br /><em>Please try again!</em>";
+            this.StateHasChanged();
+            return;
+        }
+
+        fileInfo.PositionInfo.PositionChanged += (s, e) =>
+        {
+            DropBoxCaption = $"Uploading image...{e.Percentage:0.00}%";
+            this.StateHasChanged();
+        };
+
+        Output = string.Empty;
+
+        DropBoxCaption = "Parsing image... (I am using Blazor WebAssembly so I going as fast as your browser can!)";
+        this.StateHasChanged();
+        this.StateHasChanged();
+
+        var stream = await file.CreateMemoryStreamAsync();
+        var text = converterFactory.Convert(stream, 1f, DefaultRamps.DefaultRamp);
+
+        Output = String.Join("<br />", text);
+        DropBoxCaption = "<strong>Done!</strong><br />I hope that was fast enough! Try again with a different image!";
+        this.StateHasChanged();
+
+        await jsRuntime.InvokeVoidAsync("ResizeToFitScreen");
+
+    }
+
+    [JSInvokable]
+    public async Task LoadSample()
+    {
+        if (ReadingStarted)
+            return;
+
+        using (var bytes = await httpClient.GetStreamAsync(DotNetBotUrl))
+        {
+            DropBoxCaption = "Parsing image... (I am using Blazor WebAssembly so I going as fast as your browser can!)";
+            this.StateHasChanged();
+
+            var text = converterFactory.Convert(bytes, 1f, DefaultRamps.DefaultRamp);
+            Output = String.Join("<br />", text);
+            DropBoxCaption = "<strong>Done!</strong><br />I hope that was fast enough! Try again with a different image!";
+            this.StateHasChanged();
+
+            await jsRuntime.InvokeVoidAsync("ResizeToFitScreen");
+        }
+    }
+
+}
+
