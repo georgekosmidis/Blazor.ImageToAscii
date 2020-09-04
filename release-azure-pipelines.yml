@@ -42,4 +42,4 @@ steps:
     deployToSlotOrASE: true
     ResourceGroupName: 'Blazor-Image2Text'
     SlotName: 'production'
-    packageForLinux: '$(System.DefaultWorkingDirectory)\georgekosmidis.ImageToText\drop\s\build.'
+    packageForLinux: '$(System.DefaultWorkingDirectory)\Blazor.ImageToText\drop\s\build.'
