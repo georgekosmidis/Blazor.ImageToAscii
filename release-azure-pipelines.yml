@@ -10,7 +10,7 @@ pool:
   vmImage: 'linux-latest'
 
 variables:
-  solution: '**/*.sln'
+  solution: '**/Image2Text.BlazorApp.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
