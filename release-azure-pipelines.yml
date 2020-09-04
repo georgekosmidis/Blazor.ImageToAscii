@@ -44,7 +44,7 @@ steps:
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
-    azureSubscription: 'Pay-As-You-Go Dev/Test(f57219ac-ae6c-4084-931a-fa8e54c57b8b)'
+    azureSubscription: 'Pay-As-You-Go Dev/Test(1)(f57219ac-ae6c-4084-931a-fa8e54c57b8b)'
     appType: 'webApp'
     WebAppName: 'i2t'
     packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
