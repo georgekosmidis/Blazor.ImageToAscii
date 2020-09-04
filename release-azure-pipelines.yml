@@ -32,6 +32,7 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+    
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
@@ -41,4 +42,4 @@ steps:
     deployToSlotOrASE: true
     ResourceGroupName: 'Blazor-Image2Text'
     SlotName: 'production'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    packageForLinux: '$(System.DefaultWorkingDirectory)\georgekosmidis.ImageToText\drop\s\build.'
