@@ -3,4 +3,4 @@ ImageToText is a library that transforms an image to an ASCII map, using darkers
 
 ![Transformation Sample](https://raw.githubusercontent.com/georgekosmidis/ImageToText/master/readme/readme.gif)
 
-There is an online deployment of the library based on Blazor WebAssembly, where you can find here: LINK TO SAMPLE
+There is an online deployment of the library based on Blazor WebAssembly, where you can find here: https://i2t.azurewebsites.net/
