@@ -42,13 +42,9 @@ steps:
     publishWebProjects: true
 
 - task: AzureRmWebAppDeployment@4
-  displayName: PublishToAzure
   inputs:
     ConnectionType: 'AzureRM'
     azureSubscription: 'Pay-As-You-Go Dev/Test(f57219ac-ae6c-4084-931a-fa8e54c57b8b)'
-    appType: 'webAppLinux'
+    appType: 'webApp'
     WebAppName: 'i2t'
-    deployToSlotOrASE: true
-    ResourceGroupName: 'Blazor-Image2Text'
-    SlotName: 'production'
-    packageForLinux: $(System.DefaultWorkingDirectory)/**/*.zip
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
