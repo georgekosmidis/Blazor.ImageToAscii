@@ -22,6 +22,7 @@ steps:
     restoreSolution: '$(solution)'
 
 - task: VSBuild@1
+  displayName: Build
   inputs:
     solution: '$(solution)'
     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
@@ -29,23 +30,19 @@ steps:
     configuration: '$(buildConfiguration)'
 
 - task: VSTest@2
+  displayName: BuildTest
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
     
 - task: DotNetCoreCLI@2
-  displayName: Pack
+  displayName: BuildPublish
   inputs:
     command: 'publish'
     publishWebProjects: true
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
-
 - task: AzureRmWebAppDeployment@4
+  displayName: PublishToAzure
   inputs:
     ConnectionType: 'AzureRM'
     azureSubscription: 'Pay-As-You-Go Dev/Test(f57219ac-ae6c-4084-931a-fa8e54c57b8b)'
