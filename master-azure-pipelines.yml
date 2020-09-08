@@ -25,7 +25,7 @@ steps:
   displayName: 'Use .NET Core sdk'
   inputs:
     packageType: 'sdk'
-    version: '5.0.100-preview.8'
+    version: '5.0.100'
     includePreviewVersions: true
     
 - task: VSBuild@1
