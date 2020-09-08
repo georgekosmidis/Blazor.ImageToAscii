@@ -16,14 +16,15 @@ variables:
 
 steps:
 - task: NuGetToolInstaller@1
+  displayName: 'Install NuGet'
 
 - task: NuGetCommand@2
+  displayName: 'NuGet Restore'
   inputs:
     restoreSolution: '$(solution)'
 
-
 - task: UseDotNet@2
-  displayName: 'Use .NET 5'
+  displayName: 'Install .NET 5'
   inputs:
     packageType: 'sdk'
     version: '5.x'
@@ -31,17 +32,19 @@ steps:
     performMultiLevelLookup: true
     
 - task: DotNetCoreCLI@2
+  displayName: 'dotnet build'
   inputs:
     command: 'build'
     projects: '**/Image2Text.BlazorApp.csproj'
    
 - task: DotNetCoreCLI@2
-  displayName: BuildPublish
+  displayName: 'dotnet publish'
   inputs:
     command: 'publish'
     publishWebProjects: true
 
 - task: AzureRmWebAppDeployment@4
+  displayName: 'Push to Azure'
   inputs:
     ConnectionType: 'AzureRM'
     azureSubscription: 'Pay-As-You-Go Dev/Test(1)(f57219ac-ae6c-4084-931a-fa8e54c57b8b)'
