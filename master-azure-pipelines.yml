@@ -21,6 +21,13 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk'
+  inputs:
+    packageType: 'sdk'
+    version: '5.0.100-preview.8'
+    includePreviewVersions: true
+    
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
