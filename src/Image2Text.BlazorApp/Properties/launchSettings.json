@@ -2,6 +2,10 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/Image2Text.BlazorApp",
+      "sslPort": 0
+    },
     "iisExpress": {
       "applicationUrl": "http://localhost:58235",
       "sslPort": 44307

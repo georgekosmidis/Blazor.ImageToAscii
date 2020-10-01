@@ -22,14 +22,6 @@ steps:
   displayName: 'NuGet Restore'
   inputs:
     restoreSolution: '$(solution)'
-
-- task: UseDotNet@2
-  displayName: 'Install .NET 5'
-  inputs:
-    packageType: 'sdk'
-    version: '5.x'
-    includePreviewVersions: true
-    performMultiLevelLookup: true
     
 - task: DotNetCoreCLI@2
   displayName: 'dotnet build'
