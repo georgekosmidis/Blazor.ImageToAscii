@@ -34,6 +34,7 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: true
+    arguments: '-c Release'
 
 - task: AzureRmWebAppDeployment@4
   displayName: 'Push to Azure'
