@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Image2Text.Core\Image2Text.Core.csproj" />
+    <ProjectReference Include="..\Blazor.ImageToAscii.Core\Blazor.ImageToAscii.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iis": {
-      "applicationUrl": "http://localhost/Image2Text.BlazorApp",
+      "applicationUrl": "http://localhost/Blazor.ImageToAscii",
       "sslPort": 0
     },
     "iisExpress": {
@@ -20,7 +20,7 @@
       },
       "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}"
     },
-    "Image2Text.BlazorApp": {
+    "Blazor.ImageToAscii": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

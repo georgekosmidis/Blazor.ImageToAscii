@@ -19,13 +19,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Image2Text.Core\Image2Text.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\images\dotbot.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Blazor.ImageToAscii.Core\Blazor.ImageToAscii.Core.csproj" />
   </ItemGroup>
 
 </Project>

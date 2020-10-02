@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Image2Text.BlazorApp.Common
+namespace Blazor.ImageToAscii.Common
 {
     public class PositionStream : Stream
     {

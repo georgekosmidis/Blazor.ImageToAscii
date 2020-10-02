@@ -12,7 +12,7 @@ using Image2Text.Core.ImageTranformations;
 using Image2Text.Core.ByteTransformations;
 using Image2Text.Core;
 
-namespace Image2Text.BlazorApp
+namespace Blazor.ImageToAscii
 {
     public class Program
     {
