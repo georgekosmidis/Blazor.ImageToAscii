@@ -1,4 +1,4 @@
-# ImageToText
+# An Image To Ascii Converter
 
 Blazor.ImageToAscii is a Blazor WebAssembly app that transforms an image to an ASCII map, using darkerst to lighter character sets. You can find  working sample of the app at https://i2t.azurewebsites.net/
 
