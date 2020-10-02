@@ -27,7 +27,7 @@ steps:
   displayName: 'dotnet build'
   inputs:
     command: 'build'
-    projects: '**/Image2Text.BlazorApp.csproj'
+    projects: '**/Blazor.ImageToAscii.csproj'
    
 - task: DotNetCoreCLI@2
   displayName: 'dotnet publish'
