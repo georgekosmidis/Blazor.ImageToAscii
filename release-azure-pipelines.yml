@@ -27,7 +27,7 @@ steps:
   displayName: 'dotnet build'
   inputs:
     command: 'build'
-    projects: '**/Image2Text.BlazorApp.csproj'
+    projects: '**/Blazor.ImageToAscii.csproj'
    
 - task: DotNetCoreCLI@2
   displayName: 'dotnet publish'
@@ -40,7 +40,7 @@ steps:
   displayName: 'Push to Azure'
   inputs:
     ConnectionType: 'AzureRM'
-    azureSubscription: 'Pay-As-You-Go Dev/Test(1)(f57219ac-ae6c-4084-931a-fa8e54c57b8b)'
+    azureSubscription: 'Pay-As-You-Go Dev/Test(f57219ac-ae6c-4084-931a-fa8e54c57b8b)'
     appType: 'webApp'
     WebAppName: 'i2t'
     packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
